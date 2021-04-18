@@ -78,6 +78,7 @@ jobs:
           })
   terraform_deploy:
     if: github.event_name == 'workflow_dispatch' && github.event.inputs.cmd == 'apply'
+    needs: terraform_check
     name: Terraform Apply
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -93,6 +94,7 @@ jobs:
       run: terraform apply -auto-approve
   terraform_destroy:
     if: github.event_name == 'workflow_dispatch' && github.event.inputs.cmd == 'destroy'
+    needs: terraform_check
     name: Terraform Destroy
     runs-on: ubuntu-latest
     timeout-minutes: 5
