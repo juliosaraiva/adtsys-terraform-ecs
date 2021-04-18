@@ -1,4 +1,4 @@
-name: Terraform
+name: Development
 
 on:
   pull_request:
