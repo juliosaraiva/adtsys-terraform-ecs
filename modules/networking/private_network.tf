@@ -5,7 +5,7 @@ resource "aws_subnet" "private_a" {
 
   tags = merge(
     var.common_tags,
-    map("Name", "${var.prefix}-private-a")
+    tomap({ "Name" = "${var.prefix}-private-a" })
   )
 }
 
@@ -14,7 +14,7 @@ resource "aws_route_table" "private_a" {
 
   tags = merge(
     var.common_tags,
-    map("Name", "${var.prefix}-private-a")
+    tomap({ "Name" = "${var.prefix}-private-a" })
   )
 }
 
@@ -38,7 +38,7 @@ resource "aws_subnet" "private_b" {
 
   tags = merge(
     var.common_tags,
-    map("Name", "${var.prefix}-private-b")
+    tomap({ "Name" = "${var.prefix}-private-b" })
   )
 }
 
@@ -47,7 +47,7 @@ resource "aws_route_table" "private_b" {
 
   tags = merge(
     var.common_tags,
-    map("Name", "${var.prefix}-private-b")
+    tomap({ "Name" = "${var.prefix}-private-b" })
   )
 }
 

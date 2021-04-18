@@ -22,3 +22,11 @@ variable "ecr_image_nginx" {
   default = "docker.io/nginx:latest"
   type    = string
 }
+
+variable "db_username" {
+  description = "Username for RDS postgres instance"
+}
+
+variable "db_password" {
+  description = "Password for RDS postgres instance"
+}

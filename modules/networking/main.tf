@@ -5,7 +5,7 @@ resource "aws_vpc" "main" {
 
   tags = merge(
     var.common_tags,
-    map("Name", "${var.prefix}-vpc")
+    tomap({ "Name" = "${var.prefix}-vpc" })
   )
 }
 
@@ -14,7 +14,7 @@ resource "aws_internet_gateway" "main" {
 
   tags = merge(
     var.common_tags,
-    map("Name", "${var.prefix}-main")
+    tomap({ "Name" = "${var.prefix}-main" })
   )
 }
 
