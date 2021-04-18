@@ -19,7 +19,7 @@ jobs:
     - uses: actions/checkout@v2.1.0
     - uses: hashicorp/setup-terraform@v1
     - name: Check workspace
-      id: get_workspace
+      id: check_workspace
       run: terraform workspace show
     - name: Terraform Init
       id: init
@@ -27,10 +27,10 @@ jobs:
     - name: Select Staging Workspace
       id: workspace
       run: terraform workspace select staging
-      if: ${{ get_workspace == 'staging' }}
+      if: ${{ steps.check_workspace.outputs == 'staging' }}
     - name: Create Staging workspace
       run: terraform workspace new staging
-      if: ${{ get_workspace != 'staging' }}
+      if: ${{ steps.check_workspace.outputs != 'staging' }}
 
   format:
     name: Format
