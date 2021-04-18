@@ -15,6 +15,9 @@ jobs:
     timeout-minutes: 5
     environment:
       name: staging
+    outputs:
+      get_workspace:
+        value: ${{ steps.check_workspace.outputs.workspace }}
     steps:
     - uses: actions/checkout@v2.1.0
     - uses: hashicorp/setup-terraform@v1
@@ -27,7 +30,7 @@ jobs:
     - id: check_workspace
       run: echo "::set-output name=workspace::$(terraform workspace show)"
       shell: bash
-    - run: echo ${{ steps.check_workspace.outputs.workspace }}
+    - run: echo ${{ join(steps.check_workspace.outputs.workspace, "\n") }}
     # - name: Create Staging workspace
     #   run: terraform workspace new staging
     #   if: ${{ steps.check_workspace.outputs.workspace != 'staging' }}
