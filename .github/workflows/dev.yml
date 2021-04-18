@@ -27,7 +27,7 @@ jobs:
     - id: check_workspace
       run: terraform workspace show
       shell: bash
-    - run: echo ${{ steps.check_workspace.outputs.stdout }}
+    - run: echo ${{ steps.check_workspace.outputs.stdout != 'staging' }}
     - name: Create Staging workspace
       run: terraform workspace new staging
       if: ${{ steps.check_workspace.outputs['stdout'] != 'staging' }}
