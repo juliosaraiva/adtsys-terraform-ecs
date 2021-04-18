@@ -15,9 +15,6 @@ jobs:
     timeout-minutes: 5
     environment:
       name: staging
-    outputs:
-      get_workspace:
-        value: ${{ steps.check_workspace.outputs.workspace }}
     steps:
     - uses: actions/checkout@v2.1.0
     - uses: hashicorp/setup-terraform@v1
