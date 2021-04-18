@@ -24,12 +24,12 @@ jobs:
       id: fmt
       run: terraform fmt -check
       continue-on-error: true
-    - name: Select Staging Workspace
-      run: terraform workspace select staging
     - name: Terraform Init
       id: init
       run: terraform init
       continue-on-error: true
+    - name: Select Staging Workspace
+      run: terraform workspace select staging
     - id: check_workspace
       run: terraform workspace show
     - id: output_workspace
