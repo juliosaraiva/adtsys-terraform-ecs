@@ -41,22 +41,5 @@ jobs:
       id: fmt
       run: terraform fmt -check
       continue-on-error: true
-      
-  validate:
-    name: Validate
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    environment:
-      name: staging
-    strategy:
-      matrix:
-        dir:
-          - .
-          - modules/networking
-          - modules/bastion
-          - modules/ecs
-          - modules/elb
-          - modules/rds
-    steps:
-        run: terraform init
+
 
