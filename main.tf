@@ -1,9 +1,9 @@
 terraform {
   backend "s3" {
-    bucket         = "remessa-online-tfstate"
+    bucket         = "adtsys-tfstate"
     key            = "state.tfstate"
     region         = "us-east-1"
-    dynamodb_table = "remessa-online-tfstate-lock"
+    dynamodb_table = "adtsys-tfstate-lock"
     encrypt        = true
   }
 }
@@ -11,7 +11,6 @@ terraform {
 provider "aws" {
   profile = "terraform"
   region  = "us-east-1"
-  version = "~> 2.54.0"
 }
 
 locals {
@@ -72,4 +71,14 @@ module "elb" {
   public_subnets = local.public_cidr_blocks
   vpc_id         = module.networking.vpc_id
   common_tags    = local.common_tags
+}
+
+module "rds" {
+  source              = "./modules/rds"
+  prefix              = var.prefix
+  private_cidr_blocks = local.private_cidr_blocks
+  vpc_id              = module.networking.vpc_id
+  common_tags         = local.common_tags
+  db_username         = var.db_username
+  db_password         = var.db_password
 }

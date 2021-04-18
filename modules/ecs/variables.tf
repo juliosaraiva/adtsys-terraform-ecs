@@ -15,7 +15,7 @@ variable "avail_zone" {
 
 variable "requires_compatibilities" {
   default = ["FARGATE"]
-  type    = list
+  type    = list(any)
 }
 
 variable "network_mode" {
@@ -53,7 +53,7 @@ variable "platform_version" {
 }
 
 variable "private_cidr_blocks" {
-  type = list
+  type = list(any)
 }
 
 variable "assign_public_ip" {

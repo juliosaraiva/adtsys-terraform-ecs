@@ -24,5 +24,5 @@ variable "vpc_id" {
 
 variable "private_cidr_blocks" {
   description = "List of private cidr_blocks"
-  type        = list
+  type        = list(any)
 }

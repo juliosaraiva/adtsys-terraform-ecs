@@ -5,7 +5,7 @@ variable "prefix" {
 
 variable "public_subnets" {
   default = []
-  type    = list
+  type    = list(any)
 }
 variable "vpc_id" {
   type = string

@@ -6,7 +6,7 @@ resource "aws_subnet" "public_a" {
 
   tags = merge(
     var.common_tags,
-    map("Name", "${var.prefix}-public-a")
+    tomap({ "Name" = "${var.prefix}-public-a" })
   )
 }
 
@@ -15,7 +15,7 @@ resource "aws_route_table" "public_a" {
 
   tags = merge(
     var.common_tags,
-    map("Name", "${var.prefix}-public-a")
+    tomap({ "Name" = "${var.prefix}-public-a" })
   )
 }
 
@@ -35,7 +35,7 @@ resource "aws_eip" "public_a" {
 
   tags = merge(
     var.common_tags,
-    map("Name", "${var.prefix}-public-a")
+    tomap({ "Name" = "${var.prefix}-public-a" })
   )
 }
 
@@ -45,7 +45,7 @@ resource "aws_nat_gateway" "public_a" {
 
   tags = merge(
     var.common_tags,
-    map("Name", "${var.prefix}-public-a")
+    tomap({ "Name" = "${var.prefix}-public-a" })
   )
 }
 ############
@@ -58,7 +58,7 @@ resource "aws_subnet" "public_b" {
 
   tags = merge(
     var.common_tags,
-    map("Name", "${var.prefix}-public-b")
+    tomap({ "Name" = "${var.prefix}-public-b" })
   )
 }
 
@@ -67,7 +67,7 @@ resource "aws_route_table" "public_b" {
 
   tags = merge(
     var.common_tags,
-    map("Name", "${var.prefix}-public-b")
+    tomap({ "Name" = "${var.prefix}-public-b" })
   )
 }
 
@@ -87,7 +87,7 @@ resource "aws_eip" "public_b" {
 
   tags = merge(
     var.common_tags,
-    map("Name", "${var.prefix}-public-b")
+    tomap({ "Name" = "${var.prefix}-public-b" })
   )
 }
 
@@ -97,6 +97,6 @@ resource "aws_nat_gateway" "public_b" {
 
   tags = merge(
     var.common_tags,
-    map("Name", "${var.prefix}-public-b")
+    tomap({ "Name" = "${var.prefix}-public-b" })
   )
 }

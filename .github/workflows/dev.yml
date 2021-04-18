@@ -3,31 +3,18 @@ on:
   pull_request:
 
 env:
-  TERRAFORM_VERSION: 0.13.6
+  TERRAFORM_VERSION: 0.15.0
   AWS_DEFAULT_REGION: us-east-1
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
 jobs:
-  format:
-    name: Format
+  Terraform:
+    name: Create Workspace
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2.1.0
-      - name: Format all
-        uses: hashicorp/terraform-github-actions@v0.8.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tf_actions_version: ${{ env.TERRAFORM_VERSION }}
-          tf_actions_comment: true
-          tf_actions_subcommand: fmt
-  validate:
-    name: Validate
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
+    environment:
+      name: staging
     strategy:
       matrix:
         dir:
@@ -36,24 +23,26 @@ jobs:
           - modules/bastion
           - modules/ecs
           - modules/elb
+          - modules/rds
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2.1.0
-      - name: Init
-        uses: hashicorp/terraform-github-actions@v0.8.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tf_actions_version: ${{ env.TERRAFORM_VERSION }}
-          tf_actions_working_dir: ${{ matrix.dir }}
-          tf_actions_comment: true
-          tf_actions_subcommand: init
-      - name: Validate
-        uses: hashicorp/terraform-github-actions@v0.8.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tf_actions_version: ${{ env.TERRAFORM_VERSION }}
-          tf_actions_working_dir: ${{ matrix.dir }}
-          tf_actions_comment: true
-          tf_actions_subcommand: validate
+    - uses: actions/checkout@v2.1.0
+    - uses: hashicorp/setup-terraform@v1
+    - name: Terraform Init
+      id: init
+      run: terraform init
+    - name: Select Staging Workspace
+      run: terraform workspace select staging
+      continue-on-error: true
+    - id: check_workspace
+      run: terraform workspace show
+    - id: output_workspace
+      run: echo ::set-output name=key::${{ steps.check_workspace.outputs['stdout'] }}
+    - name: Create Staging workspace
+      run: terraform workspace new staging
+      if: ${{ steps.output_workspace.outputs.key != 'staging' }}
+    - name: Terraform fmt
+      run: terraform fmt -check
+      continue-on-error: true
+    - run: terraform workspace select staging
+    - name: Terraform validate
+      run: terraform validate ${{ matrix.dir }}
