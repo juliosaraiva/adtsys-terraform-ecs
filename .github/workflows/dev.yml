@@ -26,6 +26,8 @@ jobs:
     name: Format
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    environment:
+      name: staging
     steps:
     - uses: actions/checkout@v2.1.0
     - uses: hashicorp/setup-terraform@v1
@@ -38,6 +40,8 @@ jobs:
     name: Validate
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    environment:
+      name: staging
     strategy:
       matrix:
         dir:
