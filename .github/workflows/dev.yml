@@ -24,6 +24,9 @@ jobs:
     - name: Create Staging Workspace
       id: workspace
       run: terraform workspace new staging
+    - name: Terraform validate
+      id: validate
+      run: terraform validate ${{ matrix.dir }}
 
   format:
     name: Format
@@ -55,8 +58,5 @@ jobs:
           - modules/elb
           - modules/rds
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2.1.0
-      - name: Terraform validate
-        id: validate
-        run: terraform validate ${{ matrix.dir }}
+        run: terraform init
+
