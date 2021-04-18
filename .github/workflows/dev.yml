@@ -9,7 +9,7 @@ env:
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
 jobs:
-  workspace:
+  Terraform:
     name: Create Workspace
     runs-on: ubuntu-latest
     timeout-minutes: 5
