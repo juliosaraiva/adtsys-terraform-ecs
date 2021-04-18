@@ -37,6 +37,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2.1.0
     - uses: hashicorp/setup-terraform@v1
+    - run: terraform workspace list
     - name: Terraform fmt
       id: fmt
       run: terraform fmt -check
