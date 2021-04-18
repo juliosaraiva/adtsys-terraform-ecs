@@ -10,7 +10,6 @@ env:
   AWS_DEFAULT_REGION: us-east-1
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
 jobs:
   terraform:
     name: Terraform
@@ -21,15 +20,16 @@ jobs:
     steps:
     - uses: actions/checkout@v2.1.0
     - uses: hashicorp/setup-terraform@v1
+      with: 
     - name: Terraform fmt
       id: fmt
       run: terraform fmt -check
       continue-on-error: true
+    - name: Select Staging Workspace
+      run: terraform workspace select staging
     - name: Terraform Init
       id: init
       run: terraform init
-    - name: Select Staging Workspace
-      run: terraform workspace select staging
       continue-on-error: true
     - id: check_workspace
       run: terraform workspace show
@@ -40,6 +40,4 @@ jobs:
       if: ${{ steps.output_workspace.outputs.key != 'staging' }}
     - name: Terraform plan
       id: plan
-      if: github.event_name == 'pull_request'
       run: terraform plan -no-color
-      continue-on-error: true
