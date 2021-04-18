@@ -30,6 +30,7 @@ jobs:
       continue-on-error: true
     - name: Select Staging Workspace
       run: terraform workspace select staging
+      continue-on-error: true
     - id: check_workspace
       run: terraform workspace show
     - id: output_workspace
