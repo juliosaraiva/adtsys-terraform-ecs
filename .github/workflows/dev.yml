@@ -27,12 +27,12 @@ jobs:
       run: terraform workspace select staging
     - name: Check workspace
       id: check_workspace
-      run: terraform workspace show
+      run: echo "##[set-output name=workspace;]$(terrafork workspace show)"
       continue-on-error: true
-    - run: echo ${{ steps.check_workspace.outputs.*.* }}
+    - run: echo ${{ outputs.get_workspace }}
     - name: Create Staging workspace
       run: terraform workspace new staging
-      if: ${{ steps.check_workspace.outputs != 'staging' }}
+      if: ${{ outputs.get_workspace != 'staging' }}
 
   format:
     name: Format
