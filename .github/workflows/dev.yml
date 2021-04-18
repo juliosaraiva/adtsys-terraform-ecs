@@ -18,15 +18,6 @@ jobs:
     timeout-minutes: 5
     environment:
       name: staging
-    strategy:
-      matrix:
-        dir:
-          - .
-          - modules/networking
-          - modules/bastion
-          - modules/ecs
-          - modules/elb
-          - modules/rds
     steps:
     - uses: actions/checkout@v2.1.0
     - uses: hashicorp/setup-terraform@v1
@@ -47,8 +38,6 @@ jobs:
     - name: Create Staging workspace
       run: terraform workspace new staging
       if: ${{ steps.output_workspace.outputs.key != 'staging' }}
-    - name: Terraform validate
-      run: terraform validate ${{ matrix.dir }}
     - name: Terraform plan
       id: plan
       if: github.event_name == 'pull_request'
