@@ -24,23 +24,40 @@ jobs:
     - name: Create Staging Workspace
       id: workspace
       run: terraform workspace new staging
-    - name: Terraform validate
-      id: validate
-      run: terraform validate ${{ matrix.dir }}
 
   format:
     name: Format
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    needs: workspace
     environment:
       name: staging
     steps:
     - uses: actions/checkout@v2.1.0
     - uses: hashicorp/setup-terraform@v1
-    - run: terraform workspace list
     - name: Terraform fmt
       id: fmt
       run: terraform fmt -check
       continue-on-error: true
-
-
+      
+  validate:
+    name: Validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: format
+    environment:
+      name: staging
+    strategy:
+      matrix:
+        dir:
+          - .
+          - modules/networking
+          - modules/bastion
+          - modules/ecs
+          - modules/elb
+          - modules/rds
+    steps:
+      - run: terraform workspace select staging
+      - name: Terraform validate
+        id: validate
+        run: terraform validate ${{ matrix.dir }}
