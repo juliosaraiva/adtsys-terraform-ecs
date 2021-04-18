@@ -27,7 +27,7 @@ jobs:
       run: terraform workspace select staging
     - name: Check workspace
       id: check_workspace
-      run: echo "::set-output name=workspace::$(terrafork workspace show)"
+      run: echo "::set-output name=workspace::$(terraform workspace show)"
       continue-on-error: true
     - run: echo ${{ steps.check_workspace.outputs.workspace }}
     - name: Create Staging workspace
