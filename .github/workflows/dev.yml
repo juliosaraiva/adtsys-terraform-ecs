@@ -18,6 +18,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2.1.0
     - uses: hashicorp/setup-terraform@v1
+    - name: Terraform Init
+      id: init
+      run: terraform init
     - name: Create Staging Workspace
       id: workspace
       run: terraform workspace new staging
@@ -54,9 +57,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2.1.0
-      - name: Terraform Init
-        id: init
-        run: terraform init
       - name: Terraform validate
         id: validate
         run: terraform validate ${{ matrix.dir }}
