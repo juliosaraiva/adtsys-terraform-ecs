@@ -27,10 +27,10 @@ jobs:
     - id: check_workspace
       run: terraform workspace show
     - id: output_workspace
-      run: echo ${{ steps.check_workspace.outputs['stdout'] }}
+      run: echo ::set-output name=key::${{ steps.check_workspace.outputs['stdout'] }}
     - name: Create Staging workspace
       run: terraform workspace new staging
-      if: ${{ steps.output_workspace.outputs['stdout'] != 'staging' }}
+      - if: ${{ steps.output_workspace.outputs['stdout'] != 'staging' }}
 
   format:
     name: Format
