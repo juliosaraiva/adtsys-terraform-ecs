@@ -9,35 +9,8 @@ env:
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
 jobs:
-  workspace:
+  Terraform:
     name: Create Workspace
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    environment:
-      name: staging
-    steps:
-    - uses: actions/checkout@v2.1.0
-    - uses: hashicorp/setup-terraform@v1
-    - name: Create Staging Workspace
-      id: workspace
-      run: terraform workspace new staging
-
-  format:
-    name: Format
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    environment:
-      name: staging
-    steps:
-    - uses: actions/checkout@v2.1.0
-    - uses: hashicorp/setup-terraform@v1
-    - name: Terraform fmt
-      id: fmt
-      run: terraform fmt -check
-      continue-on-error: true
-      
-  validate:
-    name: Validate
     runs-on: ubuntu-latest
     timeout-minutes: 5
     environment:
@@ -52,11 +25,24 @@ jobs:
           - modules/elb
           - modules/rds
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2.1.0
-      - name: Terraform Init
-        id: init
-        run: terraform init
-      - name: Terraform validate
-        id: validate
-        run: terraform validate ${{ matrix.dir }}
+    - uses: actions/checkout@v2.1.0
+    - uses: hashicorp/setup-terraform@v1
+    - name: Terraform Init
+      id: init
+      run: terraform init
+    - name: Select Staging Workspace
+      run: terraform workspace select staging
+      continue-on-error: true
+    - id: check_workspace
+      run: terraform workspace show
+    - id: output_workspace
+      run: echo ::set-output name=key::${{ steps.check_workspace.outputs['stdout'] }}
+    - name: Create Staging workspace
+      run: terraform workspace new staging
+      if: ${{ steps.output_workspace.outputs.key != 'staging' }}
+    - name: Terraform fmt
+      run: terraform fmt -check
+      continue-on-error: true
+    - run: terraform workspace select staging
+    - name: Terraform validate
+      run: terraform validate ${{ matrix.dir }}
