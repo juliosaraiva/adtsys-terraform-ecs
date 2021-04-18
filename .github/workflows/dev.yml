@@ -29,7 +29,7 @@ jobs:
       id: check_workspace
       run: terraform workspace show
       continue-on-error: true
-    - run: echo ${{ steps.check_workspace.outputs.* }}
+    - run: echo ${{ steps.check_workspace.outputs.*.[*] }}
     - name: Create Staging workspace
       run: terraform workspace new staging
       if: ${{ steps.check_workspace.outputs != 'staging' }}
