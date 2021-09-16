@@ -1,8 +1,6 @@
 # ADTSys Challenge - ECS Cluster
 This Terraform module deploys an Nginx Page on AWS ECS Fargate service as a challenge proposed by [ADTSys](https://www.adtsys.com.br/).
 
-[![Actions Status: Format](https://github.com/juliosaraiva/adt-terraform-ecs/workflows/Terraform/badge.svg)](https://github.com/juliosaraiva/adt-terraform-ecs/actions?query=workflow%3A"Terraform")
-
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
